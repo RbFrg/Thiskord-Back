@@ -8,7 +8,9 @@ builder.Services.AddOpenApi();
 // Init du paquet SignalR (Broadcast)
 builder.Services.AddSignalR();
 
+builder.Services.AddScoped<Thiskord_Back.Services.LogService>();
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

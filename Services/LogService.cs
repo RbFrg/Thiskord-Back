@@ -3,8 +3,48 @@ using Microsoft.Data.SqlClient;
 
 namespace Thiskord_Back.Services
 {
-    public class LogService 
+    // La classe implémente l'interface ILogService
+    public class LogService : ILogService
     {
-        
+        private readonly string _connectionString;
+
+        public LogService(IConfiguration config)
+        {
+            // Récupération de la chaîne de connexion via l'injection de IConfiguration
+            _connectionString = config.GetConnectionString("Default")
+                                ?? throw new InvalidOperationException("La chaîne de connexion 'Default' est introuvable.");
+        }
+
+        // Implémentation de la méthode synchrone de l'interface
+        public void AddLog(int userId, string message)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(_connectionString))
+                {
+                    // Opération synchrone
+                    conn.Open();
+
+                    string query = @"
+                        INSERT INTO logs (user_id, message, created_at)
+                        VALUES (@user_id, @message, GETDATE());";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.Add("@user_id", SqlDbType.Int).Value = userId;
+                        // Gestion si le message est null
+                        cmd.Parameters.Add("@message", SqlDbType.NVarChar).Value = (object)message ?? DBNull.Value;
+
+                        // Opération synchrone
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // si il y'a une erreure lors de l'écriture du log  
+                Console.WriteLine($"Erreur lors de l'écriture du log : {ex.Message}");
+            }
+        }
     }
 }

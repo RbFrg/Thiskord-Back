@@ -11,9 +11,12 @@ namespace Thiskord_Back.Controllers
 
         private readonly IDbConnectionService _dbService;
 
-        public TestController(IDbConnectionService dbService)
+        private readonly LogService _logService;
+
+        public TestController(IDbConnectionService dbService, LogService logService)
         {
             _dbService = dbService;
+            _logService = logService;
         }
 
         [HttpPost("insert")]
@@ -27,6 +30,13 @@ namespace Thiskord_Back.Controllers
         public IActionResult testing()
         {
             return Ok(new { message = "ca fonctionne"});
+        }
+
+        [HttpPost("minotaurd")]
+        public IActionResult addLog([FromBody] int userId, string message)
+        {
+            _logService.AddLog(userId, message);
+            return Ok(new { message = "on ajouter le log" });
         }
 
 

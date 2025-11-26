@@ -30,7 +30,10 @@ namespace Thiskord_Back.Services
         {
             using var connection = CreateConnection();
             connection.Open();
-            string query = "INSERT INTO table_test (mess) VALUES ('test')";
+            string query = "INSERT INTO table_test (id, mess) VALUES ('1', 'test')";
+            using var command = new SqlCommand(query, connection);
+            command.ExecuteNonQuery();
+            connection.Close();
 
         }
     }

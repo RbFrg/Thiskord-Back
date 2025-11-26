@@ -1,6 +1,10 @@
-﻿namespace Thiskord_Back.Services
+﻿
+using Microsoft.Data.SqlClient;
+
+namespace Thiskord_Back.Services
 {
-    public class LogService
+    public class LogService 
     {
+        
     }
 }

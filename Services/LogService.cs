@@ -1,10 +1,11 @@
-﻿
+﻿using System.Data;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 
 namespace Thiskord_Back.Services
 {
     // La classe implémente l'interface ILogService
-    public class LogService : ILogService
+    public class LogService 
     {
         private readonly string _connectionString;
 
@@ -47,4 +48,6 @@ namespace Thiskord_Back.Services
             }
         }
     }
+
+   
 }

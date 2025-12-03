@@ -29,4 +29,10 @@ namespace Thiskord_Back.Models.Auth
         }
 
     }
+
+    public class AuthRequest
+    {
+        public string user_auth { get; set; }
+        public string password { get; set; }
+    }
 }

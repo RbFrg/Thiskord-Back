@@ -11,8 +11,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddSignalR();
 
 builder.Services.AddScoped<Thiskord_Back.Services.IDbConnectionService, Thiskord_Back.Services.DBService>();
-builder.Services.AddScoped<Thiskord_Back.Services.IDbConnectionService, Thiskord_Back.Servuces.AuthService>();
-
+builder.Services.AddScoped<Thiskord_Back.Services.AuthService>();
+builder.Services.AddScoped<Thiskord_Back.Services.JsonService>();
 builder.Services.AddScoped<Thiskord_Back.Services.LogService>();
 var app = builder.Build();
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using Thiskord_Back.Services;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -32,9 +33,17 @@ namespace Thiskord_Back.Controllers
             return Ok(new { message = "ca fonctionne"});
         }
 
-        [HttpPost("minotaurd")]
-        public IActionResult addLog([FromBody] int userId, string message)
+        public class RequestTest
         {
+            public int userId;
+            public string message;
+        }
+
+        [HttpPost("minotaurd")]
+        public IActionResult addLog([FromBody] RequestTest request)
+        {
+            int userId = request.userId;
+            string message = request.message;
             _logService.AddLog(userId, message);
             return Ok(new { message = "on ajouter le log" });
         }

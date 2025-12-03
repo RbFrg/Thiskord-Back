@@ -26,6 +26,8 @@ namespace Thiskord_Back.Services
             return new SqlConnection(_config.GetConnectionString("DefaultConnection"));
         }
 
+
+
         public void Test()
         {
             using var connection = CreateConnection();

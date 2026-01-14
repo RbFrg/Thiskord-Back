@@ -27,7 +27,7 @@ namespace Thiskord_Back.Controllers
 
         // POST: HomeController/Create
         [HttpPost("create")]
-        public async Task<ActionResult> Create([FromBody] ProjectRequest req)
+        public ActionResult Create([FromBody] ProjectRequest req)
         {
             if (string.IsNullOrEmpty(req.project_name))
             {
@@ -39,7 +39,7 @@ namespace Thiskord_Back.Controllers
                 try
                 {
                     // envois des données au service de création de projet
-                    int pro = await _projectService.CreateProject(req.project_name, req.project_desc);
+                    int pro = _projectService.CreateProject(req.project_name, req.project_desc);
 
                     return Ok(pro);
 

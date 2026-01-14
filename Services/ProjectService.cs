@@ -13,7 +13,7 @@ namespace Thiskord_Back.Services
             _logService = logService;
         }
 
-        public async Task<int> CreateProject(string project_name, string project_desc)
+        public int CreateProject(string project_name, string project_desc)
         {
             DateTime modified_at = DateTime.Now;
             try
@@ -21,7 +21,7 @@ namespace Thiskord_Back.Services
                 using (SqlConnection conn = _dbService.CreateConnection())
                 {
                     SqlTransaction transaction;
-                    await conn.OpenAsync();
+                    conn.Open();
                     transaction = conn.BeginTransaction();
                     string query = "INSERT INTO Project (project_name, project_desc, modified_at) VALUES (@project_name, @project_desc, @modified_at); SELECT SCOPE_IDENTITY();";
                     using (SqlCommand command = new SqlCommand(query, conn))
@@ -32,7 +32,7 @@ namespace Thiskord_Back.Services
                             command.Parameters.AddWithValue("@project_name", project_name);
                             command.Parameters.AddWithValue("@project_desc", project_desc);
                             command.Parameters.AddWithValue("@modified_at", modified_at);
-                            object result = await command.ExecuteScalarAsync();
+                            object result = command.ExecuteScalar();
                             transaction.Commit();
                             return result != null ? Convert.ToInt32(result) : -1;
                         }

@@ -8,6 +8,7 @@ namespace Thiskord_Back.Services
     // La classe implémente l'interface ILogService
     public class LogService
     {
+        private readonly string _logFilePath;
         private readonly string _connectionString;
 
         public LogService(IConfiguration config)
@@ -15,6 +16,8 @@ namespace Thiskord_Back.Services
             // Récupération de la chaîne de connexion via l'injection de IConfiguration
             _connectionString = config.GetConnectionString("DefaultConnection")
                                 ?? throw new InvalidOperationException("La chaîne de connexion 'Default' est introuvable.");
+            string dossierDocuments = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            _logFilePath = Path.Combine(dossierDocuments, "logs.txt");
         }
 
         // Implémentation de la méthode synchrone de l'interface
@@ -53,17 +56,14 @@ namespace Thiskord_Back.Services
         {
             try
             {
-                StreamWriter sw = new StreamWriter("C:\\Users\\hikme\\OneDrive - Groupe Mont-Roland\\Documents\\AK Emre LID\\Projet C#\\logs.txt");
-                sw.Write(message);
-                sw.Close();
+                using (StreamWriter sw = new StreamWriter(_logFilePath, append: true))
+                {
+                    sw.WriteLine($"{DateTime.Now}: {message}");
+                }
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception: " + e.Message);
-            }
-            finally
-            {
-                Console.WriteLine("Executing finally block.");
+                Console.WriteLine("Log error pour les logs " + e.Message);
             }
         }
 

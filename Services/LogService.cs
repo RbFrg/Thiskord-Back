@@ -1,18 +1,19 @@
 ﻿using System.Data;
+using System.IO;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 
 namespace Thiskord_Back.Services
 {
     // La classe implémente l'interface ILogService
-    public class LogService 
+    public class LogService
     {
         private readonly string _connectionString;
 
         public LogService(IConfiguration config)
         {
             // Récupération de la chaîne de connexion via l'injection de IConfiguration
-            _connectionString = config.GetConnectionString("Default")
+            _connectionString = config.GetConnectionString("DefaultConnection")
                                 ?? throw new InvalidOperationException("La chaîne de connexion 'Default' est introuvable.");
         }
 
@@ -47,7 +48,24 @@ namespace Thiskord_Back.Services
                 Console.WriteLine($"Erreur lors de l'écriture du log : {ex.Message}");
             }
         }
-    }
 
-   
+        public void CreateLog(string message)
+        {
+            try
+            {
+                StreamWriter sw = new StreamWriter("C:\\Users\\hikme\\OneDrive - Groupe Mont-Roland\\Documents\\AK Emre LID\\Projet C#\\logs.txt");
+                sw.Write(message);
+                sw.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: " + e.Message);
+            }
+            finally
+            {
+                Console.WriteLine("Executing finally block.");
+            }
+        }
+
+    }
 }
